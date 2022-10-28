@@ -1,5 +1,4 @@
 import React from "react";
-import LinkTable from "./LinkTable";
 
 function FormRow({ chooseProduct, rowButtons }) {
 
