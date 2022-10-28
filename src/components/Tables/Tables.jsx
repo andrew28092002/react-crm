@@ -5,11 +5,17 @@ import TableContent from "./TableContent";
 
 import React, { useEffect, useState } from "react";
 
-function Tables(props) {
+function Tables() {
   const [requests, setRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterProduct, setFilterProduct] = useState("all");
+  const [flag, setFlag] = useState(true)
   let filterByProduct, filteredElements;
+
+
+  const updateFlag = () => {
+    setFlag(prevFlag => !prevFlag)
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -47,7 +53,7 @@ function Tables(props) {
     return () => {
       controller.abort();
     };
-  }, [props.flag]);
+  }, [flag]);
 
   // Фильтр по продукту
   if (filterProduct === "all") {
@@ -142,8 +148,7 @@ function Tables(props) {
           <FormRow chooseProduct={chooseProduct} clickStatus={clickStatus} />
 
           <TableContent
-            updateFlag={props.updateFlag}
-            flag={props.flag}
+            updateFlag={updateFlag}
             requests={filteredElements}
           />
         </div>

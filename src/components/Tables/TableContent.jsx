@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function TableContent(props) {
+function TableContent({updateFlag, requests}) {
 
   const reverseProduct = {
     "course-vue": "Курс по VUE JS",
@@ -38,7 +38,7 @@ function TableContent(props) {
       });
   };
 
-  const requestsList = props.requests.map((request) => {
+  const requestsList = requests.map((request) => {
     return (
       <tr key={request.id}>
         <th scope="row">{request.id}</th>
@@ -59,8 +59,8 @@ function TableContent(props) {
         </td>
         <td>
           <button
-            onClick={(id, callback) =>
-              deleteRequest(request.id, props.updateFlag)
+            onClick={() =>
+              deleteRequest(request.id, updateFlag)
             }
             className="btn btn-outline-danger"
           >
