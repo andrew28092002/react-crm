@@ -31,4 +31,8 @@ const testRequests = [
   },
 ];
 
-export default testRequests;
+const randomValue = ()=>{
+  return testRequests[Math.floor(Math.random()*(testRequests.length-1))]
+}
+
+export default randomValue;
