@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import testRequests from "../../test-data";
+import randomValue from "../../test-data";
 
 function FormRequest() {
   const [isPending, setIsPending] = useState(false);
@@ -12,19 +12,10 @@ function FormRequest() {
 
   // Тестовые данные 
   const insertTestData = () => {
-    const randomNum = Math.floor(Math.random() * testRequests.length);
-    const { name, email, phone, product } = testRequests[randomNum];
-
-    document.querySelector("#name").value = name;
-    document.querySelector("#phone").value = phone;
-    document.querySelector("#email").value = email;
-    document.querySelector("#product").value = product;
+    const info = randomValue();
 
     setRequestInfo({
-      name: name,
-      phone: phone,
-      email: email,
-      product: product,
+      ...info
     });
   };
 
@@ -125,6 +116,7 @@ function FormRequest() {
             className="form-control"
             placeholder={label.placeholder}
             onChange={changeInfo}
+            value={requestInfo[label.name]}
           />
         </div>
       );
@@ -137,7 +129,7 @@ function FormRequest() {
             className="form-control"
             id={label.id}
             onChange={changeInfo}
-            defaultValue="none"
+            defaultValue={requestInfo[label.name]}
           >
             <option value="none" disabled>
               Выбрать
