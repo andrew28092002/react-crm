@@ -12,7 +12,7 @@ export class LeftPanel extends Component {
 
         <User/>
 
-        <Navigation clickStatus={this.props.clickStatus} countNewRequests={this.props.countNewRequests}/>
+        <Navigation buttons={this.props.buttons}/>
 
       </div>
     );

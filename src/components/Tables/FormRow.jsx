@@ -1,8 +1,7 @@
 import React from "react";
+import LinkTable from "./LinkTable";
 
-function FormRow(props) {
-
-  const {clickStatus, chooseProduct} = props
+function FormRow({ chooseProduct, rowButtons }) {
 
   return (
     <form action="">
@@ -14,25 +13,14 @@ function FormRow(props) {
             role="group"
             aria-label="..."
           >
-            <a href="/#" className="btn btn-light" data-value="all" onClick={clickStatus}>
-              Все
-            </a>
-            <a href="/#" className="btn btn-light" data-value="new" onClick={clickStatus}>
-              Новые
-            </a>
-            <a href="/#" className="btn btn-light" data-value="inwork" onClick={clickStatus}>
-              В работе
-            </a>
-            <a href="/#" className="btn btn-light" data-value="complete" onClick={clickStatus}>
-              Завершенные
-            </a>
+            {rowButtons}
           </div>
         </div>
 
         <div className="col">
           <select
             className="custom-select"
-            id="productSelect" 
+            id="productSelect"
             defaultValue="all"
             onChange={chooseProduct}
           >

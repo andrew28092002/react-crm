@@ -24,14 +24,14 @@ function TableContent({updateFlag, requests}) {
   };
 
   // Удаление заявки
-  const deleteRequest = (id, callback) => {
+  const deleteRequest = (id, updateFlag) => {
 
     const url = "https://crm-server.glitch.me/requests/" + id;
     fetch(url, {
       method: "DELETE",
     })
       .then(() => {
-        callback();
+        updateFlag();
       })
       .catch((err) => {
         console.log(err);
