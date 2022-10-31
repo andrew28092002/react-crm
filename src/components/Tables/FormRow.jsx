@@ -1,6 +1,23 @@
 import React from "react";
+import LinkTable from "./LinkTable";
 
-function FormRow({ chooseProduct, rowButtons }) {
+function FormRow({ chooseProduct,clickStatus , buttons}) {
+
+  const rowButtons = buttons.map((button) => {
+    return (
+      <LinkTable
+        key={button.value}
+        href="/#"
+        classAttr={`btn btn-light ${
+          button.value === localStorage.getItem('filter-status') ? "active": ""
+        }`}
+        dataValue={button.value}
+        onClick={clickStatus}
+      >
+        {button.descr}
+      </LinkTable>
+    );
+  });
 
   return (
     <form action="">

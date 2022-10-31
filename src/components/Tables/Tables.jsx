@@ -4,7 +4,6 @@ import LeftPanel from "./LeftPanel/LeftPanel";
 import TableContent from "./TableContent";
 
 import React, { useEffect, useState } from "react";
-import LinkTable from "./LinkTable";
 
 const NewRequest = React.createContext();
 
@@ -80,8 +79,6 @@ function Tables() {
     localStorage.setItem("filter-status", e.target.dataset.value);
 
     setFilterStatus(e.target.dataset.value);
-
-    return (e) => clickStatus(e);
   };
 
   // При выборе продукта в select, устанавливается фильтр по продукту
@@ -89,12 +86,10 @@ function Tables() {
     localStorage.setItem("filter-product", e.target.value);
 
     setFilterProduct(e.target.value);
-
-    return (e) => chooseProduct();
   };
 
   // Счётчик кол-во новых заявок в left-bar
-  const countNewRequests = requests.filter((request) => {
+  const newRequests = requests.filter((request) => {
     return request.status === "new";
   });
 
@@ -117,50 +112,26 @@ function Tables() {
     },
   ];
 
-  const rowButtons = buttons.map((button) => {
-    return (
-      <LinkTable
-        key={button.value}
-        href="/#"
-        classAttr={`btn btn-light ${
-          "active" ? button.value === filterStatus : ""
-        }`}
-        dataValue={button.value}
-        onClick={clickStatus}
-      >
-        {button.descr}
-      </LinkTable>
-    );
-  });
-
-  const leftButtons = buttons.map((button) => {
-    return (
-      <NewRequest.Provider value={countNewRequests.length} key={button.value}>
-        <LinkTable
-          href="/#"
-          classAttr={button.value === filterStatus? "active": ""}
-          dataValue={button.value}
-          dataRole="left-status"
-          onClick={clickStatus}
-        >
-          {button.descr}
-        </LinkTable>
-      </NewRequest.Provider>
-    );
-  });
-
   return (
     <section className="body--dashboard">
       <NavBar />
 
-      <LeftPanel buttons={leftButtons} />
+      <LeftPanel
+        buttons={buttons}
+        newRequests={newRequests}
+        clickStatus={clickStatus}
+      />
 
       {/* <!-- main-wrapper --> */}
       <div className="main-wrapper">
         <div className="container-fluid">
           <div className="admin-heading-1">Все заявки</div>
 
-          <FormRow chooseProduct={chooseProduct} rowButtons={rowButtons} />
+          <FormRow
+            chooseProduct={chooseProduct}
+            clickStatus={clickStatus}
+            buttons={buttons}
+          />
 
           <TableContent updateFlag={updateFlag} requests={filteredElements} />
         </div>

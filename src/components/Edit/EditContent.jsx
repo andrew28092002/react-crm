@@ -55,8 +55,7 @@ function EditContent() {
       console.log(err)
     })
 
-    return (e)=> {
-      submitForm(e)
+    return ()=> {
       controller.abort()
     }
 
@@ -73,7 +72,6 @@ function EditContent() {
       })
     }
 
-    return (e) => changeInfo(e)
   }
 
   return (

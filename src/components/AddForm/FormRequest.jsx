@@ -100,8 +100,6 @@ function FormRequest() {
         };
       });
     }
-
-    return (e) => changeInfo(e)
   };
 
   // Элементы формы

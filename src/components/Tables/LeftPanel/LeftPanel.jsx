@@ -10,7 +10,11 @@ function LeftPanel(props) {
 
       <User />
 
-      <Navigation buttons={props.buttons} />
+      <Navigation
+        buttons={props.buttons}
+        newRequests={props.newRequests}
+        clickStatus={props.clickStatus}
+      />
     </div>
   );
 }
