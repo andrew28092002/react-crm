@@ -1,13 +1,14 @@
 import React from 'react'
 import NavBar from '../NavBar/NavBar'
-import EditContent from './EditContent'
+import EditRequest from './EditRequest'
+
 
 
 function Edit() {
   return (
     <section>
       <NavBar />
-      <EditContent/>
+      <EditRequest/>
     </section>
   )
 }

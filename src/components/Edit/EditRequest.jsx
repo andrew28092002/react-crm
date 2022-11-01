@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-function EditContent() {
+function EditRequest() {
   const [requestInfo, setRequestInfo] = useState({
     name: "",
     phone: "",
@@ -228,4 +228,4 @@ function EditContent() {
   );
 }
 
-export default EditContent
+export default EditRequest
