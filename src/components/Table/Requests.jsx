@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function TableContent({updateFlag, requests}) {
+function Requests({updateFlag, requests}) {
 
   const reverseProduct = {
     "course-vue": "Курс по VUE JS",
@@ -90,4 +90,4 @@ function TableContent({updateFlag, requests}) {
   );
 }
 
-export default TableContent;
+export default Requests;

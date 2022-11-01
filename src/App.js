@@ -1,8 +1,8 @@
 import React from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import AddForm from "./components/AddForm/AddForm";
+import Form from "./components/Form/Form";
 import Edit from "./components/Edit/Edit";
-import Tables from "./components/Tables/Tables";
+import Table from "./components/Table/Table";
 
 
 function App() {
@@ -10,10 +10,10 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<AddForm />} />
+        <Route path="/" element={<Form />} />
         <Route
           path="/requests"
-          element={<Tables />}
+          element={<Table />}
         />
         <Route path="/edit/:id" element={<Edit />} />
       </Routes>

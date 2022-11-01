@@ -1,14 +1,12 @@
 import NavBar from "../NavBar/NavBar";
-import FormRow from "./FormRow";
+import StatusBar from "./StatusBar/StatusBar";
 import LeftPanel from "./LeftPanel/LeftPanel";
-import TableContent from "./TableContent";
+import Requests from "./Requests";
 
 import React, { useEffect, useState } from "react";
 
-const NewRequest = React.createContext();
-
 function Tables() {
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState([])
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterProduct, setFilterProduct] = useState("all");
   const [flag, setFlag] = useState(true);
@@ -19,8 +17,6 @@ function Tables() {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
-
     // Получение значений фильтра из localStorage
     const product = localStorage.getItem("filter-product");
     const status = localStorage.getItem("filter-status");
@@ -28,6 +24,8 @@ function Tables() {
     // Изменения state для фильтров по статусу и продукту
     setFilterProduct(product || "all");
     setFilterStatus(status || "all");
+
+    const controller = new AbortController()
 
     fetch("https://crm-server.glitch.me/requests", {
       signal: controller.signal,
@@ -56,7 +54,7 @@ function Tables() {
 
   // Фильтр по продукту
   if (filterProduct === "all") {
-    filterByProduct = requests;
+    filterByProduct = JSON.parse(JSON.stringify(requests));
   } else {
     filterByProduct = requests.filter((request) => {
       return request.product === filterProduct;
@@ -65,7 +63,7 @@ function Tables() {
 
   // Фильтр по статусу
   if (filterStatus === "all") {
-    filteredElements = filterByProduct;
+    filteredElements = JSON.parse(JSON.stringify(filterByProduct));
   } else {
     filteredElements = filterByProduct.filter((request) => {
       return request.status === filterStatus;
@@ -96,19 +94,19 @@ function Tables() {
   const buttons = [
     {
       value: "all",
-      descr: "Все",
+      description: "Все",
     },
     {
       value: "new",
-      descr: "Новые",
+      description: "Новые",
     },
     {
       value: "inwork",
-      descr: "В работе",
+      description: "В работе",
     },
     {
       value: "complete",
-      descr: "Завершенные",
+      description: "Завершенные",
     },
   ];
 
@@ -118,7 +116,7 @@ function Tables() {
 
       <LeftPanel
         buttons={buttons}
-        newRequests={newRequests}
+        countNewRequests={newRequests.length}
         clickStatus={clickStatus}
       />
 
@@ -127,18 +125,17 @@ function Tables() {
         <div className="container-fluid">
           <div className="admin-heading-1">Все заявки</div>
 
-          <FormRow
+          <StatusBar
             chooseProduct={chooseProduct}
             clickStatus={clickStatus}
             buttons={buttons}
           />
 
-          <TableContent updateFlag={updateFlag} requests={filteredElements} />
+          <Requests updateFlag={updateFlag} requests={filteredElements} />
         </div>
       </div>
     </section>
   );
 }
 
-export { NewRequest };
 export default Tables;

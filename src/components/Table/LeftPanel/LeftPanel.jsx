@@ -12,7 +12,7 @@ function LeftPanel(props) {
 
       <Navigation
         buttons={props.buttons}
-        newRequests={props.newRequests}
+        countNewRequests={props.countNewRequests}
         clickStatus={props.clickStatus}
       />
     </div>

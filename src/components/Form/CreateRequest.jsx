@@ -160,9 +160,12 @@ function FormRequest() {
           method="POST"
           action=""
         >
+          {/* Инпуты */}
           {formInputLabels}
 
           <div className="form-group">
+
+            {/* Кнопка выключается, если отправить заявку на время отправления данных */}
             {isPending && (
               <button
                 disabled

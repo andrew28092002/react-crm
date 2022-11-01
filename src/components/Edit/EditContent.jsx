@@ -23,8 +23,10 @@ function EditContent() {
       })
       .then((data) => {
         setRequestInfo({ ...data });
-        console.log(data)
-      });
+      })
+      .catch((err) =>{
+        console.log(err)
+      })
   };
   
   // Получение текущей заявки при загрузке страницы
@@ -226,4 +228,4 @@ function EditContent() {
   );
 }
 
-export default EditContent;
+export default EditContent
