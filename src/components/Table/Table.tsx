@@ -1,16 +1,24 @@
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../Navbar/Navbar";
 import StatusBar from "./StatusBar/StatusBar";
 import LeftPanel from "./LeftPanel/LeftPanel";
 import Requests from "./Requests";
 
-import React, { useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
+import { TRequest } from "../../models/request";
 
-function Tables() {
-  const [requests, setRequests] = useState([])
+const Tables: FC = () => {
+  const [requests, setRequests] = useState<TRequest[]>([]);
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterProduct, setFilterProduct] = useState("all");
   const [flag, setFlag] = useState(true);
-  let filterByProduct, filteredElements;
+  let filteredByProduct: TRequest[] = [];
+  let filteredElements: TRequest[] = [];
 
   const updateFlag = () => {
     setFlag((prevFlag) => !prevFlag);
@@ -25,7 +33,7 @@ function Tables() {
     setFilterProduct(product || "all");
     setFilterStatus(status || "all");
 
-    const controller = new AbortController()
+    const controller = new AbortController();
 
     fetch("https://crm-server.glitch.me/requests", {
       signal: controller.signal,
@@ -54,33 +62,40 @@ function Tables() {
 
   // Фильтр по продукту
   if (filterProduct === "all") {
-    filterByProduct = JSON.parse(JSON.stringify(requests));
+    filteredByProduct = [...requests];
   } else {
-    filterByProduct = requests.filter((request) => {
+    filteredByProduct = requests.filter((request) => {
       return request.product === filterProduct;
     });
   }
 
   // Фильтр по статусу
   if (filterStatus === "all") {
-    filteredElements = JSON.parse(JSON.stringify(filterByProduct));
+    filteredElements = [...filteredByProduct];
   } else {
-    filteredElements = filterByProduct.filter((request) => {
+    filteredElements = filteredByProduct.filter((request) => {
       return request.status === filterStatus;
     });
   }
 
   // По клику на кнопки статуса, устанавливается фильтр по статусу
-  const clickStatus = (e) => {
+  const clickStatus = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    localStorage.setItem("filter-status", e.target.dataset.value);
+    const value = e.currentTarget.dataset.value;
 
-    setFilterStatus(e.target.dataset.value);
+    if (value) {
+      localStorage.setItem(
+        "filter-status",
+        value
+      );
+
+      setFilterStatus(value);
+    }
   };
 
   // При выборе продукта в select, устанавливается фильтр по продукту
-  const chooseProduct = (e) => {
+  const chooseProduct = (e: React.ChangeEvent<HTMLSelectElement>) => {
     localStorage.setItem("filter-product", e.target.value);
 
     setFilterProduct(e.target.value);
@@ -91,31 +106,11 @@ function Tables() {
     return request.status === "new";
   });
 
-  const buttons = [
-    {
-      value: "all",
-      description: "Все",
-    },
-    {
-      value: "new",
-      description: "Новые",
-    },
-    {
-      value: "inwork",
-      description: "В работе",
-    },
-    {
-      value: "complete",
-      description: "Завершенные",
-    },
-  ];
-
   return (
     <section className="body--dashboard">
       <NavBar />
 
       <LeftPanel
-        buttons={buttons}
         countNewRequests={newRequests.length}
         clickStatus={clickStatus}
       />
@@ -125,17 +120,18 @@ function Tables() {
         <div className="container-fluid">
           <div className="admin-heading-1">Все заявки</div>
 
-          <StatusBar
-            chooseProduct={chooseProduct}
-            clickStatus={clickStatus}
-            buttons={buttons}
-          />
+          <StatusBar chooseProduct={chooseProduct} clickStatus={clickStatus} />
 
-          <Requests updateFlag={updateFlag} requests={filteredElements} />
+          {filteredByProduct && filteredElements && (
+            <Requests
+              updateFlag={updateFlag}
+              requests={filteredElements || filteredByProduct || requests}
+            />
+          )}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default Tables;

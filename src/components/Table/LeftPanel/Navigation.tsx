@@ -1,6 +1,12 @@
-import React from "react";
+import React, {FC} from "react";
+import { buttons } from "../../../ui/buttons";
 
-function Navigation({ buttons, countNewRequests, clickStatus }) {
+type Props = {
+  countNewRequests: number
+  clickStatus: (e: React.MouseEvent<HTMLAnchorElement>) => void
+}
+
+const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
   const leftButtons = buttons.map((button) => {
     // Для кнопки 'Новые' справа указывается значение новых заявок
     if (button.value === "new") {

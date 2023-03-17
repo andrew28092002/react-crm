@@ -1,28 +1,40 @@
-import React, { useEffect, useState } from "react";
-import randomValue from "../../test-data";
+import React, { ChangeEvent, useState } from "react";
+import { TNewRequest, TRequest } from "../../models/request";
+
+const formLabels = [
+  {
+    id: "name",
+    type: "text",
+    name: "name",
+    placeholder: "Имя и Фамилия",
+  },
+  {
+    id: "phone",
+    type: "text",
+    name: "phone",
+    placeholder: "Телефон",
+  },
+  {
+    id: "email",
+    type: "email",
+    name: "email",
+    placeholder: "Email",
+  },
+  { id: "product", name: "product" },
+];
+
+const initalRequestState = {
+  name: "",
+  phone: "",
+  email: "",
+  product: "none",
+};
 
 function FormRequest() {
   const [isPending, setIsPending] = useState(false);
-  const [requestInfo, setRequestInfo] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    product: "none",
+  const [requestInfo, setRequestInfo] = useState<TNewRequest>({
+    ...initalRequestState,
   });
-
-  // Тестовые данные 
-  const insertTestData = () => {
-    const info = randomValue();
-
-    setRequestInfo({
-      ...info
-    });
-  };
-
-  // Загрузка тестовых данных при первом рендеренге 
-  useEffect(() => {
-    insertTestData();
-  }, []);
 
   // Получение текущей даты
   const getCurrentDate = () => {
@@ -35,15 +47,12 @@ function FormRequest() {
   const clearForm = () => {
     setIsPending(false);
     setRequestInfo({
-      name: "",
-      phone: "",
-      email: "",
-      product: "none",
+      ...initalRequestState
     });
   };
 
   // Отправка формы
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPending(true);
 
@@ -60,38 +69,14 @@ function FormRequest() {
     })
       .then(() => {
         clearForm();
-        insertTestData();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  // Поля формы
-  const formLabels = [
-    {
-      id: "name",
-      type: "text",
-      name: "name",
-      placeholder: "Имя и Фамилия",
-    },
-    {
-      id: "phone",
-      type: "text",
-      name: "phone",
-      placeholder: "Телефон",
-    },
-    {
-      id: "email",
-      type: "email",
-      name: "email",
-      placeholder: "Email",
-    },
-    { id: "product", name: "product" },
-  ];
-
   // Добавление в state измененных значений формы
-  const changeInfo = (e) => {
+  const changeInfo = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (e.target.value.length > 1) {
       setRequestInfo((prev) => {
         return {
@@ -114,7 +99,6 @@ function FormRequest() {
             className="form-control"
             placeholder={label.placeholder}
             onChange={changeInfo}
-            value={requestInfo[label.name]}
           />
         </div>
       );
@@ -164,7 +148,6 @@ function FormRequest() {
           {formInputLabels}
 
           <div className="form-group">
-
             {/* Кнопка выключается, если отправить заявку на время отправления данных */}
             {isPending && (
               <button

@@ -1,31 +1,35 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import { TRequest } from "../../models/request";
 
-function Requests({updateFlag, requests}) {
+const reverseProduct: any = {
+  "course-vue": "Курс по VUE JS",
+  "course-php": "Курс по PHP",
+  "course-js": "Курс по JavaScript",
+  "course-html": "Курс по верстке",
+  "course-wordpress": "Курс по WordPress",
+};
 
-  const reverseProduct = {
-    "course-vue": "Курс по VUE JS",
-    "course-php": "Курс по PHP",
-    "course-js": "Курс по JavaScript",
-    "course-html": "Курс по верстке",
-    "course-wordpress": "Курс по WordPress",
-  };
+const badges: any= {
+  new: "badge-danger",
+  inwork: "badge-warning",
+  complete: "badge-success",
+};
 
-  const badges = {
-    new: "badge-danger",
-    inwork: "badge-warning",
-    complete: "badge-success",
-  };
+const reverseStatus: any = {
+  new: "Новая",
+  inwork: "В работе",
+  complete: "Завершена",
+};
 
-  const reverseStatus = {
-    new: "Новая",
-    inwork: "В работе",
-    complete: "Завершена",
-  };
+type Props = {
+  updateFlag: () => void,
+  requests: TRequest[]
+}
 
+const Requests: FC<Props> = ({ updateFlag, requests }) => {
   // Удаление заявки
-  const deleteRequest = (id, updateFlag) => {
-
+  const deleteRequest = (id: number) => {
     const url = "https://crm-server.glitch.me/requests/" + id;
     fetch(url, {
       method: "DELETE",
@@ -59,9 +63,7 @@ function Requests({updateFlag, requests}) {
         </td>
         <td>
           <button
-            onClick={() =>
-              deleteRequest(request.id, updateFlag)
-            }
+            onClick={() => deleteRequest(request.id)}
             className="btn btn-outline-danger"
           >
             Удалить

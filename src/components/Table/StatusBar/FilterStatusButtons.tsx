@@ -1,6 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
+import { buttons } from "../../../ui/buttons";
 
-function FilterStatusButtons({ buttons, clickStatus}) {
+type Props = {
+  clickStatus:  (e: React.MouseEvent<HTMLAnchorElement>) => void
+}
+
+const FilterStatusButtons: FC<Props> = ({ clickStatus }) => {
   const statusButtons = buttons.map((button) => {
     return (
       <a

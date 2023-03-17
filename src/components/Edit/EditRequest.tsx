@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { TRequest } from "../../models/request";
 
 function EditRequest() {
-  const [requestInfo, setRequestInfo] = useState({
+  const [requestInfo, setRequestInfo] = useState<TRequest>({
     name: "",
     phone: "",
     email: "",
     product: "",
     status: "",
     date: "",
-    id: "",
+    id: 0,
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const url = "https://crm-server.glitch.me/requests/" + id;
 
-  // Получение и запись в state текущей задачи
-  const getCurrentRequest = () => {
+  // Получение текущей заявки при загрузке страницы
+  useEffect(() => {
     fetch(url)
       .then((res) => {
         return res.json();
@@ -24,57 +25,41 @@ function EditRequest() {
       .then((data) => {
         setRequestInfo({ ...data });
       })
-      .catch((err) =>{
-        console.log(err)
-      })
-  };
-  
-  // Получение текущей заявки при загрузке страницы
-  useEffect(() => {
-    getCurrentRequest();
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-
   // Отправление измененных данных
-  const submitForm = (e) => {
-    e.preventDefault()
-    const controller = new AbortController()
-    const signal = controller.signal
-    
+  const submitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestInfo),
-      
     };
 
-   fetch(url, requestOptions, {signal})
-    .then( ()=> navigate('/requests'))
-    .catch((err) => {
-      if (err === 'AbortError'){
-        console.log('fetch aborted')
-      }
-      console.log(err)
-    })
-
-    return ()=> {
-      controller.abort()
-    }
-
+    fetch(url, requestOptions)
+      .then(() => navigate("/requests"))
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // Запись в state измененных данных
-  const changeInfo = (e) => {
-    if (e.target.value.length > 1){
-      setRequestInfo( prev => {
+  const changeInfo = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (e.target.value.length > 1) {
+      setRequestInfo((prev) => {
         return {
           ...prev,
-          [e.target.name]: e.target.value
-        }
-      })
+          [e.target.name]: e.target.value,
+        };
+      });
     }
-
-  }
+  };
 
   return (
     <div className="form-wrapper">
@@ -92,7 +77,7 @@ function EditRequest() {
 
         <div className="row">
           <div className="col">
-            <form id="form" >
+            <form id="form">
               <div className="card mb-4">
                 <div className="card-header">Данные о заявке</div>
                 <div className="card-body">
@@ -198,7 +183,6 @@ function EditRequest() {
                         name="status"
                         onChange={changeInfo}
                       >
-
                         <option value="new">Новая</option>
                         <option value="inwork">В работе</option>
                         <option value="complete">Завершена</option>
@@ -228,4 +212,4 @@ function EditRequest() {
   );
 }
 
-export default EditRequest
+export default EditRequest;
