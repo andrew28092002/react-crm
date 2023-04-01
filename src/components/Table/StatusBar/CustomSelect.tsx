@@ -1,15 +1,25 @@
 import React, { FC } from "react";
+import { setProdcutCreator } from "../../../store/reducers/requestsReducer/actionCreators";
+import { useTypedDispatch } from "../../../store/store";
 
-type Props = {
-  chooseProduct: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-};
+const CustomSelect: FC = () => {
+  const dispatch = useTypedDispatch();
 
-const CustomSelect: FC<Props> = ({ chooseProduct }) => {
+  const chooseProduct = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const product = e.target.value;
+
+    if (product) {
+      localStorage.setItem("filter-product", product);
+
+      dispatch(setProdcutCreator(product));
+    }
+  };
+
   return (
     <select
       className="custom-select"
       id="productSelect"
-      defaultValue="all"
+      defaultValue={localStorage.getItem("filter-product") || "all"}
       onChange={chooseProduct}
     >
       <option value="all">Все продукты</option>

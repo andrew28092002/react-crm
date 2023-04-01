@@ -1,16 +1,25 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { setStatusCreator } from "../../../store/reducers/requestsReducer/actionCreators";
+import { useTypedDispatch } from "../../../store/store";
 import { buttons } from "../../../ui/buttons";
 
-type Props = {
-  clickStatus:  (e: React.MouseEvent<HTMLAnchorElement>) => void
-}
+const FilterStatusButtons: FC = () => {
+  const dispatch = useTypedDispatch();
 
-const FilterStatusButtons: FC<Props> = ({ clickStatus }) => {
+  const clickStatus = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const status = e.currentTarget.dataset.value;
+
+    if (status) {
+      localStorage.setItem("filter-status", status);
+      dispatch(setStatusCreator(status));
+    }
+  };
+
   const statusButtons = buttons.map((button) => {
     return (
       <a
         key={button.value}
-        href="/#"
+        href="#"
         className={`btn btn-light ${
           button.value === localStorage.getItem("filter-status") ? "active" : ""
         }`}
@@ -26,6 +35,6 @@ const FilterStatusButtons: FC<Props> = ({ clickStatus }) => {
       {statusButtons}
     </div>
   );
-}
+};
 
 export default FilterStatusButtons;

@@ -12,7 +12,7 @@ import {
 } from "./actionCreators";
 
 export const getAllRequestsAction =
-  () => async (dispatch: Dispatch<TRequestsActions>) => {
+  (): any => async (dispatch: Dispatch<TRequestsActions>) => {
     try {
       dispatch(fetchingCreator());
 
@@ -27,7 +27,7 @@ export const getAllRequestsAction =
   };
 
 export const getRequestAction =
-  (id: number) => async (dispatch: Dispatch<TRequestsActions>) => {
+  (id: number): any => async (dispatch: Dispatch<TRequestsActions>) => {
     try {
       dispatch(fetchingCreator());
 
@@ -42,7 +42,7 @@ export const getRequestAction =
   };
 
 export const deleteRequestAction =
-  (id: number) => async (dispatch: Dispatch<TRequestsActions>) => {
+  (id: number): any => async (dispatch: Dispatch<TRequestsActions>) => {
     try {
       dispatch(fetchingCreator());
 
@@ -57,7 +57,7 @@ export const deleteRequestAction =
   };
 
 export const updateRequestAction =
-  (request: TRequest) => async (dispatch: Dispatch<TRequestsActions>) => {
+  (request: TRequest): any => async (dispatch: Dispatch<TRequestsActions>) => {
     try {
       dispatch(fetchingCreator());
 

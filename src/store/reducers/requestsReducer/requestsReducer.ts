@@ -1,11 +1,11 @@
 import { TRequest } from "../../../models/request";
 import { TRequestsActions } from "./actionCreators";
 
-type TRequestState = {
+export type TRequestState = {
   requests: TRequest[];
   request: TRequest | null;
-  sortedByProduct: TRequest[];
-  sortedByStatus: TRequest[];
+  product: string;
+  status: string;
   isLoading: boolean;
   error: string;
 };
@@ -13,8 +13,8 @@ type TRequestState = {
 const initialState: TRequestState = {
   requests: [],
   request: null,
-  sortedByProduct: [],
-  sortedByStatus: [],
+  product: "all",
+  status: "all",
   isLoading: false,
   error: "",
 };
@@ -23,8 +23,8 @@ export enum requestsActionsName {
   GET_ALL_REQUESTS = "GET_ALL_REQUESTS",
   GET_REQUEST = "GET_REQUEST",
   DELETE_REQUEST = "DELETE_REQUEST",
-  SORT_BY_PRODUCT = "SORT_BY_PRODUCT",
-  SORT_BY_STATUS = "SORT_BY_STATUS",
+  SET_PRODUCT = "SET_PRODUCT",
+  SET_STATUS = "SET_STATUS",
   UPDATE_REQUEST = "UPDATE_REQUEST",
   FETCHING = "FETCHING",
   ERROR = "ERROR",
@@ -70,24 +70,19 @@ export const requestsReducer = (
           return request;
         }),
       };
-    case requestsActionsName.SORT_BY_PRODUCT:
+
+    case requestsActionsName.SET_PRODUCT:
       return {
         ...state,
-        isLoading: false,
-        error: "",
-        requests: [...state.requests].filter((request) => {
-          if (request.product === action.payload) return request;
-        }),
+        product: action.payload,
       };
-    case requestsActionsName.SORT_BY_STATUS:
+
+    case requestsActionsName.SET_STATUS:
       return {
         ...state,
-        isLoading: false,
-        error: "",
-        requests: [...state.requests].filter((request) => {
-          if (request.status === action.payload) return request;
-        }),
+        status: action.payload,
       };
+
     case requestsActionsName.FETCHING:
       return {
         ...state,
@@ -100,5 +95,7 @@ export const requestsReducer = (
         isLoading: false,
         error: action.payload,
       };
+    default:
+      return state;
   }
 };

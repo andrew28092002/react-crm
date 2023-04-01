@@ -1,19 +1,29 @@
-import React, {FC} from "react";
+import React, { FC, useEffect } from "react";
+import { setStatusCreator } from "../../../store/reducers/requestsReducer/actionCreators";
+import { useTypedDispatch, useTypedSelector } from "../../../store/store";
 import { buttons } from "../../../ui/buttons";
 
-type Props = {
-  countNewRequests: number
-  clickStatus: (e: React.MouseEvent<HTMLAnchorElement>) => void
-}
+const Navigation: FC = () => {
+  const { requests } = useTypedSelector((state) => state.request);
+  const dispatch = useTypedDispatch();
+  const count = requests.filter((request) => request.status === "new").length;
 
-const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
+  const clickStatus = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const status = e.currentTarget.dataset.value;
+
+    if (status) {
+      localStorage.setItem('filter-status', status)
+      dispatch(setStatusCreator(status));
+    }
+  };
+
   const leftButtons = buttons.map((button) => {
     // Для кнопки 'Новые' справа указывается значение новых заявок
     if (button.value === "new") {
       return (
         <a
           key={button.value}
-          href="/#"
+          href="#"
           className={
             button.value === localStorage.getItem("filter-status")
               ? "active"
@@ -26,7 +36,7 @@ const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
           {button.description}
 
           <div className="badge" id="badge-new">
-            {countNewRequests}
+            {count}
           </div>
         </a>
       );
@@ -34,7 +44,7 @@ const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
       return (
         <a
           key={button.value}
-          href="/#"
+          href="#"
           data-value={button.value}
           data-role="left-status"
           onClick={clickStatus}
@@ -49,7 +59,7 @@ const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
       );
     }
   });
- 
+
   return (
     <div className="left-panel__navigation">
       <div className="left-panel__navigation-title">Заявки</div>
@@ -58,6 +68,6 @@ const Navigation: FC<Props> = ({ countNewRequests, clickStatus }) => {
       </ul>
     </div>
   );
-}
+};
 
 export default Navigation;

@@ -1,6 +1,8 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { TRequest } from "../../models/request";
+import { getRequests } from "../../store/selectors/requestSelectors";
+import {useTypedSelector } from "../../store/store";
 
 const reverseProduct: any = {
   "course-vue": "Курс по VUE JS",
@@ -10,7 +12,7 @@ const reverseProduct: any = {
   "course-wordpress": "Курс по WordPress",
 };
 
-const badges: any= {
+const badges: any = {
   new: "badge-danger",
   inwork: "badge-warning",
   complete: "badge-success",
@@ -22,25 +24,8 @@ const reverseStatus: any = {
   complete: "Завершена",
 };
 
-type Props = {
-  updateFlag: () => void,
-  requests: TRequest[]
-}
-
-const Requests: FC<Props> = ({ updateFlag, requests }) => {
-  // Удаление заявки
-  const deleteRequest = (id: number) => {
-    const url = "https://crm-server.glitch.me/requests/" + id;
-    fetch(url, {
-      method: "DELETE",
-    })
-      .then(() => {
-        updateFlag();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+const Requests: FC = () => {
+  const requests = useTypedSelector(getRequests)
 
   const requestsList = requests.map((request) => {
     return (
@@ -63,7 +48,7 @@ const Requests: FC<Props> = ({ updateFlag, requests }) => {
         </td>
         <td>
           <button
-            onClick={() => deleteRequest(request.id)}
+            // onClick={() => deleteRequest(request.id)}
             className="btn btn-outline-danger"
           >
             Удалить
@@ -90,6 +75,6 @@ const Requests: FC<Props> = ({ updateFlag, requests }) => {
       <tbody id="tbody">{requestsList}</tbody>
     </table>
   );
-}
+};
 
 export default Requests;

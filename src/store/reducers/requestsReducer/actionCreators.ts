@@ -32,19 +32,19 @@ export const updateRequestCreator = (request: TRequest) => ({
 
 type updateRequestCreator = ReturnType<typeof updateRequestCreator>;
 
-export const sortedByProductCreator = (product: string) => ({
-  type: requestsActionsName.SORT_BY_PRODUCT as requestsActionsName.SORT_BY_PRODUCT,
+export const setProdcutCreator = (product: string) => ({
+  type: requestsActionsName.SET_PRODUCT as requestsActionsName.SET_PRODUCT,
   payload: product,
 });
 
-type sortedByProductCreator = ReturnType<typeof sortedByProductCreator>;
+type setProdcutCreator = ReturnType<typeof setProdcutCreator>;
 
-export const sortedByStatusCreator = (status: string) => ({
-  type: requestsActionsName.SORT_BY_STATUS as requestsActionsName.SORT_BY_STATUS,
+export const setStatusCreator = (status: string) => ({
+  type: requestsActionsName.SET_STATUS as requestsActionsName.SET_STATUS,
   payload: status,
 });
 
-type sortedByStatusCreator = ReturnType<typeof sortedByStatusCreator>;
+type setStatusCreator = ReturnType<typeof setStatusCreator>;
 
 export const fetchingCreator = () => ({
   type: requestsActionsName.FETCHING as requestsActionsName.FETCHING,
@@ -63,8 +63,8 @@ export type TRequestsActions =
   | getAllRequestsAction
   | getRequestCreator
   | updateRequestCreator
+  | setStatusCreator
+  | setProdcutCreator
   | deleteRequestCreator
-  | sortedByProductCreator
-  | sortedByStatusCreator
   | errorCreator
   | fetchingCreator;
