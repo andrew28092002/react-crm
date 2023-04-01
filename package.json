@@ -1,7 +1,6 @@
 {
   "name": "crm",
   "version": "0.1.0",
-  "homepage": "https://andrew28092002.github.io/react-crm/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

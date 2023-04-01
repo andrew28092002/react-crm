@@ -18,7 +18,6 @@ const Tables: FC = () => {
 
   useEffect(() => {
     dispatch(getAllRequestsAction());
-
     const product = localStorage.getItem("filter-product");
     const status = localStorage.getItem("filter-status");
 
@@ -29,7 +28,7 @@ const Tables: FC = () => {
     if (status) {
       dispatch(setStatusCreator(status));
     }
-  }, [product, status]);
+  }, [dispatch]);
 
   return (
     <section className="body--dashboard">
